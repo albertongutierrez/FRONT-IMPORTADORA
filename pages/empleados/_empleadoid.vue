@@ -106,7 +106,7 @@ export default {
     ...mapActions(["updateempleados"]),
     updatePro() {
       if (!this.id || !this.nombre || !this.salario || !this.sexoV || !this.estadoV) {
-        alert("Todos los compos son requeridos");
+        this.$toast.error("Todos los compos son requeridos");
       } else {
         const data = {
           id: this.id,

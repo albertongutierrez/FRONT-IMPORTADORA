@@ -84,20 +84,11 @@ export const actions = {
     },
 
 
-    async readUser({ commit }) {
-        const res = await this.$axios.get('user');
-        if (res.data.status == 1) {
-            commit('setUser', res.data.message);
-        } else {
-            this.$toast.error(res.data.message);
-        }
-    },
-
     async createempleados(_, data) {
         const res = await this.$axios.post('empleados', data);
-        if (res.data.status == 1) {
+        if (res.data.type == 1) {
             this.$toast.success(res.data.message);
-            this.$router.push('/empleados/');
+            this.$router.push('/');
         } else {
             this.$toast.error(res.data.message);
         }

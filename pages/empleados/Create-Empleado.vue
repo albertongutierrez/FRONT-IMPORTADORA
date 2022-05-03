@@ -4,7 +4,7 @@
       <div>
         <v-breadcrumbs :items="items">
           <template v-slot:item="{ item }">
-            <v-breadcrumbs-item :disabled="item.disabled" >
+            <v-breadcrumbs-item :disabled="item.disabled">
               <nuxt-link
                 :to="{
                   path: item.href,
@@ -24,13 +24,13 @@
               <form action="" id="w-100" @submit.prevent="create">
                 <v-textField
                   label="Nombre"
-                  v-model="Nombre"
+                  v-model="nombre"
                   type="text"
                 ></v-textField>
                 <v-textField
                   label="Salario"
                   type="number"
-                  v-model="content"
+                  v-model="salario"
                 ></v-textField>
                 <v-select
                   :items="sexo"
@@ -84,13 +84,14 @@ export default {
   methods: {
     ...mapActions(["createempleados"]),
     create() {
-      if (!this.title || !this.content || !this.price) {
-        alert("Please fill all the field");
+      if ( !this.nombre || !this.salario || !this.sexoV || !this.estadoV) {
+        this.$toast.error("Todos los compos son requeridos");
       } else {
         const data = {
-          title: this.title,
-          content: this.content,
-          price: this.price,
+          nombre: this.nombre,
+          salario: this.salario,
+          sexo: this.sexoV === "Masculino" ? "M" : "F",
+          estado: this.estadoV === "Activo" ? "A" : "I",
         };
         this.createempleados(data);
       }
