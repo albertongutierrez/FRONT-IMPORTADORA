@@ -1,4 +1,4 @@
-# nuxt-crud-with-auth-using-php-api
+# nuxt-crud-importadora
 
 ## Build Setup
 
