@@ -35,12 +35,15 @@ export default {
     buildModules: [
         // https://go.nuxtjs.dev/vuetify
         '@nuxtjs/vuetify',
+        '@nuxtjs/moment',
     ],
 
     // Modules: https://go.nuxtjs.dev/config-modules
     modules: [
         // https://go.nuxtjs.dev/axios
         '@nuxtjs/axios',
+        '@nuxtjs/toast',
+        'nuxtjs-sweetalert2'
     ],
 
 
@@ -68,6 +71,11 @@ export default {
                 }
             }
         }
+    },
+
+    toast: {
+        position: 'bottom-center',
+        duration: 3000,
     },
 
     // Build Configuration: https://go.nuxtjs.dev/config-build

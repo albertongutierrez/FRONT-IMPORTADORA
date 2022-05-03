@@ -2,7 +2,7 @@
   <v-row justify="center" align="center" class="contianer-fluid">
     <v-col cols="12" lg="12">
       <div v-if="$store.state.token">
-      <h1 class="text-center">Empleados</h1>
+        <h1 class="text-center">Empleados</h1>
         <v-container>
           <nuxt-link
             :to="{
@@ -69,13 +69,25 @@ export default {
     ...mapActions(["getAllempleados"]),
     ...mapActions(["deleteempleados"]),
     async deletePro(id) {
-      const data = {
+      let self=this;
+       const data = {
         id: id,
       };
-      await this.deleteempleados(data);
-      await this.getAllempleados();
+      this.$swal.fire({
+        title: "¿Estás seguro de realizar esta acción?",
+        text:"El registro será eliminado",
+        showCancelButton: true,
+        confirmButtonText: "Si, Continuar",
+        cancelButtonText: "Cancelar"
+      }).then(async (result) => {
+        if (result.isConfirmed) {
+          await self.deleteempleados(data);
+          await self.getAllempleados();
+        } 
+      });
     },
   },
+  middleware: ["auth"],
   mounted() {
     this.getAllempleados();
   },

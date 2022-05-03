@@ -1,6 +1,7 @@
 export const state = () => ({
     token: localStorage.getItem('token') || '',
-    user: {},
+    user: [],
+    users: '',
     empleados: []
 })
 
@@ -23,6 +24,9 @@ export const mutations = {
     setToken(state, token) {
         state.token = token
     },
+    setUsers(state, users) {
+        state.users = users
+    },
     setEmpleados(state, empleados) {
         state.empleados = empleados;
     }
@@ -34,19 +38,19 @@ export const actions = {
         try {
             const res = await this.$axios.post('user/create', data);
             if (res.data.type == 1) {
-                alert(res.data.message);
+                this.$toast.success(res.data.message);
                 data.name = "";
                 data.email = "";
                 data.password = "";
                 this.$router.push('/login');
             } else {
-                alert(res.data.message)
+                this.$toast.error(res.data.message);
             }
         } catch (err) {
             if (err.message === 'Request failed with status code 422') {
-                alert('Usuario Existe')
+                this.$toast.error('Usuario Existe');
             } else {
-                alert(err.message)
+                this.$toast.error(err.message);
             }
         }
     },
@@ -54,17 +58,22 @@ export const actions = {
     async loginUser({ commit }, data) {
         const res = await this.$axios.post('user', data);
         if (res.data.type == 1) {
-            // data.email = "";
-            // data.password = "";
-
             localStorage.setItem('token', res.data.user);
-            // console.log(res.data);
+            commit('setUsers', res.data.mail);
             commit('setToken', res.data.user);
-            // alert(res.data.message)
+
             this.$router.push("/");
+            this.$toast.success(res.data.message);
 
         } else {
-            alert(res.data.message);
+            this.$toast.error(res.data.message);
+        }
+    },
+
+    async getAllUser({ commit }) {
+        const res = await this.$axios.get('user');
+        if (res.data.length > 0) {
+            commit('setUser', res.data);
         }
     },
 
@@ -76,41 +85,30 @@ export const actions = {
 
 
     async readUser({ commit }) {
-        const config = {
-            headers: {
-                'Authorization': localStorage.getItem('token')
-            }
-        };
-        const res = await this.$axios.get('user', config);
+        const res = await this.$axios.get('user');
         if (res.data.status == 1) {
             commit('setUser', res.data.message);
         } else {
-            alert(res.data.message);
+            this.$toast.error(res.data.message);
         }
     },
 
     async createempleados(_, data) {
-        const config = {
-            headers: {
-                'Authorization': localStorage.getItem('token')
-            }
-        };
-        const res = await this.$axios.post('empleados', data, config);
+        const res = await this.$axios.post('empleados', data);
         if (res.data.status == 1) {
-            alert(res.data.message);
+            this.$toast.success(res.data.message);
             this.$router.push('/empleados/');
         } else {
-            alert(res.data.message);
+            this.$toast.error(res.data.message);
         }
     },
 
     async deleteempleados({ commit, state }, data) {
         const res = await this.$axios.delete('empleados', { params: { id: data.id } });
         if (res.data.type == 1) {
-            alert(res.data.message);
+            this.$toast.success(res.data.message);
         } else {
-            alert(res.data.message);
-
+            this.$toast.error(res.data.message);
         }
     },
     async getAllempleados({ commit }) {
@@ -123,10 +121,10 @@ export const actions = {
     async updateempleados(_, data) {
         const res = await this.$axios.put('empleados', data);
         if (res.data.type == 1) {
-            alert(res.data.message);
+            this.$toast.success(res.data.message);
             this.$router.push('/')
         } else {
-            alert(res.data.message);
+            this.$toast.error(res.data.message);
         }
     }
 }

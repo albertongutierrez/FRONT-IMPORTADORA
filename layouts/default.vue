@@ -2,10 +2,12 @@
   <v-app dark>
     <v-app-bar :clipped-left="clipped" fixed app>
       <nuxt-link to="/">  <img src="https://ilp.com.do/wp-content/uploads/2020/02/logo-web-ilp-260.png" alt="" width="60%"></nuxt-link>
+        <nuxt-link  v-if="$store.state.token" to="/" class=" text--white mr-5">Inicio </nuxt-link>
+        <nuxt-link  v-if="$store.state.token" to="/reportes" class=" text--white"> Reportes</nuxt-link>
       <v-spacer />
       <v-toolbar-title v-if="$store.state.token">
         <!-- <nuxt-link to="/" class=" text--white">Inicio</nuxt-link> -->
-        <span class="mr-4">{{ $store.state.user.name }}</span>
+        <span class="mr-4">{{ $store.state.users }}</span>
         <v-btn color="error" @click="logout">Cerrar Sesión</v-btn>
       </v-toolbar-title>
       <v-toolbar-title v-else>
